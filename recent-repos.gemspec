@@ -1,10 +1,9 @@
-
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "recent-repos/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "recent_repos"
+  spec.name          = "recent-repos"
   spec.version       = RecentRepos::VERSION
   spec.authors       = ["'Brandon Weaver'"]
   spec.email         = ["'a7xncob@gmail.com'"]

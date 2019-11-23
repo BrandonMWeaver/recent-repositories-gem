@@ -1,4 +1,2 @@
-require "recent-repos/version"
-
-module RecentRepos
-end
+require_relative "recent-repos/version"
+require_relative "recent-repos/cli"

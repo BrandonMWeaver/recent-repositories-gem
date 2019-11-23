@@ -1,3 +1,7 @@
 !#/usr/bin/env ruby
 
+require_relative "../lib/recent-repos"
+
 puts "Hello World!"
+
+RecentRepos::CLI.new.call
