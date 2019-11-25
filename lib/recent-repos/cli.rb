@@ -6,6 +6,6 @@ class RecentRepos::CLI
   end
   
   def test_print
-    puts @scraper.document
+    puts @scraper.document.css(".p-name").text
   end
 end
