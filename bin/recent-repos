@@ -4,4 +4,5 @@ require_relative "../lib/recent-repos"
 
 puts "Hello World!"
 
-RecentRepos::CLI.new.call
+user_cli = RecentRepos::CLI.new(RecentRepos::Scraper.new("https://github.com/BrandonMWeaver"))
+user_cli.test_print
