@@ -2,8 +2,8 @@
 
 require_relative "../lib/recent-repos"
 
-puts "Hello World!"
-
-profile = RecentRepos::CLI.new(RecentRepos::Profile.new(RecentRepos::Scraper.get_profile("BrandonMWeaver")))
+scraper = RecentRepos::Scraper.new("BrandonMWeaver")
+profile = RecentRepos::CLI.new(RecentRepos::Profile.new(scraper))
 profile.print_name
 profile.print_contributions
+profile.print_repositories
