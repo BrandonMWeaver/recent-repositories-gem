@@ -1,11 +1,15 @@
 class RecentRepos::CLI
-  attr_accessor :scraper
+  attr_accessor :profile
   
-  def initialize(scraper)
-    @scraper = scraper
+  def initialize(profile)
+    @profile = profile
   end
   
-  def test_print
-    puts @scraper.document.css(".p-name").text
+  def print_name
+    puts @profile.name
+  end
+  
+  def print_contributions
+    puts "#{@profile.contributions} contributions"
   end
 end
