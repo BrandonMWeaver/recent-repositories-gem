@@ -1,5 +1,5 @@
 class RecentRepos::CLI
-  attr_accessor :profile
+  attr_accessor :profile, :repo
   
   def call
     menu
@@ -25,20 +25,39 @@ class RecentRepos::CLI
     }
   end
   
+  def print_messages
+    @repo.commit_messages.each { |message|
+      puts message
+    }
+  end
+  
   def menu
+    profile_name = ""
+    
     loop do
       puts "Enter a command:"
       input = gets.strip
-      if input.split(':')[0].downcase == "search"
-        @profile = RecentRepos::Profile.new(RecentRepos::Scraper.new(input.split(':')[1].split(' ')[0]))
+      
+      if input.split(':')[0].downcase == "get"
+        profile_name = input.split(':')[1].split(' ')[0]
+        @profile = RecentRepos::Profile.new(RecentRepos::Scraper.new(profile_name))
         print_name
       end
+      
       if input.downcase == "contributions" && @profile
         print_contributions
       end
+      
       if input.downcase == "repos" && @profile
         print_repositories
       end
+      
+      if input.split(':')[0].downcase == "open" && @profile
+        repo_name = input.split(':')[1].split(' ')[0]
+        @repo = RecentRepos::Repo.new(RecentRepos::Scraper.get_repo_doc(profile_name, repo_name))
+        print_messages
+      end
+      
       break if input.downcase == "exit" 
     end
   end

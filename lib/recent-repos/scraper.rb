@@ -10,6 +10,10 @@ class RecentRepos::Scraper
     @documents[:repositories] = get_repos_doc(profile_name)
   end
   
+  def self.get_repo_doc(profile_name, repo_name)
+    return Nokogiri::HTML(open("https://github.com/#{profile_name}/#{repo_name}/commits"))
+  end
+  
   private
   
   def get_profile_doc(profile_name)
