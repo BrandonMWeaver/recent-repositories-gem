@@ -8,7 +8,7 @@ class RecentRepos::CLI
   private
   
   def print_name
-    puts @profile.name
+    puts "The user's name: #{@profile.name}"
   end
   
   def print_contributions
@@ -16,13 +16,17 @@ class RecentRepos::CLI
   end
   
   def print_repositories
-    puts "Recent repositories:"
-    i = 0
-    @profile.repositories.each { |repo|
-      print "\t"
-      print '0' if i < 9
-      puts "#{i += 1}. #{repo}"
-    }
+    if @profile.repositories.size == 0
+      puts "This user has no repositories"
+    else
+      puts "Recent repositories:"
+      i = 0
+      @profile.repositories.each { |repo|
+        print "\t"
+        print '0' if i < 9
+        puts "#{i += 1}. #{repo}"
+      }
+    end
   end
   
   def print_messages
@@ -40,25 +44,38 @@ class RecentRepos::CLI
       
       if input.split(':')[0].downcase == "get"
         profile_name = input.split(':')[1].split(' ')[0]
-        @profile = RecentRepos::Profile.new(RecentRepos::Scraper.new(profile_name))
-        print_name
-      end
-      
-      if input.downcase == "contributions" && @profile
+        begin
+          @profile = RecentRepos::Profile.new(RecentRepos::Scraper.new(profile_name))
+          if @profile.name != ""
+            print_name
+          else
+            puts "Profile acquired"
+          end
+        rescue OpenURI::HTTPError
+          puts "Profile not found!"
+        end
+        
+      elsif input.downcase == "contributions" && @profile
         print_contributions
-      end
-      
-      if input.downcase == "repos" && @profile
+        
+      elsif input.downcase == "repos" && @profile
         print_repositories
-      end
-      
-      if input.split(':')[0].downcase == "open" && @profile
+        
+      elsif input.split(':')[0].downcase == "open" && @profile
         repo_name = input.split(':')[1].split(' ')[0]
-        @repo = RecentRepos::Repo.new(RecentRepos::Scraper.get_repo_doc(profile_name, repo_name))
-        print_messages
-      end
+        begin
+          @repo = RecentRepos::Repo.new(RecentRepos::Scraper.get_repo_doc(profile_name, repo_name))
+          print_messages
+        rescue OpenURI::HTTPError
+          puts "Repository not found!"
+        end
       
-      break if input.downcase == "exit" 
+      elsif input.downcase == "exit"
+        break
+        
+      else
+        puts "Invalid command!"
+      end
     end
   end
 end
