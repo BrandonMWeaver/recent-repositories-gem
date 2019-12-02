@@ -27,7 +27,7 @@ class RecentRepos::CLI
   
   def print_messages
     @repo.commit_messages.each { |message|
-      puts message
+      puts "\t#{message}"
     }
   end
   
